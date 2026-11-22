@@ -41,6 +41,16 @@ flutter test integration_test/app_test.dart -d emulator-5554
 [Головна](docs/home.png) · [Каталог](docs/catalog.png) · [Профіль](docs/profile.png) · [Темна тема](docs/dark_theme.png) · [Обране та перегляд фото](docs/favorites_and_zoom.png)
 
 Під час роботи використовував ChatGPT для підготовки частини коду віджетів, екранів і тестів, пошуку помилок та оформлення README. Запуск і перевірку застосунку проводив у власному середовищі розробки.
+## Матеріали практичної роботи
+
+- [Вебдемонстрація TechStore](https://vvivchar-bit.github.io/flutter-widgets-vivchar/)
+- [Android APK](https://drive.google.com/file/d/1g49tBu-jfxISXy_Pno34fpyZ83RQV1Px/view?usp=sharing)
+- [Дизайн-система Figma](https://www.figma.com/design/4bjJA7w5klykpg18G26d3l/TechStore)
+- [Відеодемонстрація YouTube](https://youtube.com/shorts/kgIdG0vmgL4)
+- [Архітектура застосунку](docs/architecture.png)
+- [Схема керування станом](docs/state_flow.png)
+- [Дерево віджетів](docs/widget_tree.png)
+- [Контракт Mock API](docs/mock_api.md)
 
 
 

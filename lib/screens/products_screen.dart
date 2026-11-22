@@ -1,3 +1,4 @@
+
 import 'package:material_ui/material_ui.dart';
 import '../models/product.dart';
 import '../utils/app_state.dart';
@@ -60,8 +61,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 : 1;
 
             final cardWidth =
-                (constraints.maxWidth - 32 - (columns - 1) * 12)
-                    / columns;
+                (constraints.maxWidth - 32 - (columns - 1) * 12) /
+                    columns;
 
             return ListView(
               padding: const EdgeInsets.all(16),
@@ -71,9 +72,31 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 const SizedBox(height: 12),
+
                 Text(
                   'Товарів у кошику: ${widget.appState.cartItemsCount}',
                 ),
+
+                const SizedBox(height: 8),
+
+                if (widget.appState.cartItemsCount > 0)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: OutlinedButton.icon(
+                      icon: const Icon(Icons.delete_outline),
+                      label: const Text('Очистити кошик'),
+                      onPressed: () {
+                        widget.appState.clearCart();
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Кошик очищено'),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
                 SwitchListTile(
                   title: const Text('Тільки обране'),
                   value: _onlyFavorites,
@@ -83,11 +106,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     });
                   },
                 ),
+
                 const SizedBox(height: 12),
+
                 if (products.isEmpty)
                   const Center(
                     child: Text('Обраних товарів немає'),
                   ),
+
                 Wrap(
                   spacing: 12,
                   runSpacing: 12,
