@@ -1,3 +1,4 @@
+
 import 'package:material_ui/material_ui.dart';
 
 class AnimatedCounter extends StatefulWidget {
@@ -20,7 +21,7 @@ class AnimatedCounter extends StatefulWidget {
 }
 
 class _AnimatedCounterState extends State<AnimatedCounter>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late int _counter;
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -47,25 +48,35 @@ class _AnimatedCounterState extends State<AnimatedCounter>
       ),
     );
 
+    _buttonAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.85,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeOutBack,
+      ),
+    );
+
     debugPrint('AnimatedCounter: initState');
   }
 
   @override
   void didUpdateWidget(covariant AnimatedCounter oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     _controller.duration = widget.animationDuration;
+
+    if (oldWidget.initialValue != widget.initialValue) {
+      _counter = widget.initialValue;
+    }
+
     _counter = _counter.clamp(0, widget.maxValue);
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _buttonAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.85,
-    ).chain(
-      CurveTween(curve: Curves.easeOutBack),
-    ).animate(_controller);
     debugPrint('AnimatedCounter: dispose');
     super.dispose();
   }
@@ -98,6 +109,7 @@ class _AnimatedCounterState extends State<AnimatedCounter>
           children: [
             const Text('Анімований лічильник'),
             const SizedBox(height: 20),
+
             ScaleTransition(
               scale: _animation,
               child: AnimatedDefaultTextStyle(
@@ -110,7 +122,9 @@ class _AnimatedCounterState extends State<AnimatedCounter>
                 child: Text('$_counter'),
               ),
             ),
+
             const SizedBox(height: 20),
+
             TweenAnimationBuilder<double>(
               tween: Tween<double>(
                 end: _counter / widget.maxValue,
@@ -123,36 +137,32 @@ class _AnimatedCounterState extends State<AnimatedCounter>
                 );
               },
             ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ScaleTransition(
-                  scale: _buttonAnimation,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                        onPressed: _counter > 0
-                            ? () => _changeValue(_counter - 1)
-                            : null,
-                        icon: const Icon(Icons.remove),
-                      ),
-                      IconButton(
-                        onPressed: () => _changeValue(0),
-                        icon: const Icon(Icons.refresh),
-                      ),
-                      IconButton(
-                        onPressed: _counter < widget.maxValue
-                            ? () => _changeValue(_counter + 1)
-                            : null,
-                        icon: const Icon(Icons.add),
-                      ),
-                    ],
-                  ),
-                ),
 
-              ],
+            const SizedBox(height: 20),
+
+            ScaleTransition(
+              scale: _buttonAnimation,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    onPressed: _counter > 0
+                        ? () => _changeValue(_counter - 1)
+                        : null,
+                    icon: const Icon(Icons.remove),
+                  ),
+                  IconButton(
+                    onPressed: () => _changeValue(0),
+                    icon: const Icon(Icons.refresh),
+                  ),
+                  IconButton(
+                    onPressed: _counter < widget.maxValue
+                        ? () => _changeValue(_counter + 1)
+                        : null,
+                    icon: const Icon(Icons.add),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
